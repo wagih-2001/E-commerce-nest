@@ -20,7 +20,10 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(port, '127.0.0.1');
+  // local
+  // await app.listen(port, '127.0.0.1');
+  
+  await app.listen(port, '0.0.0.0');
 
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

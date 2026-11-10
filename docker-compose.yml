@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ecommerce-backend
+
+    restart: unless-stopped
+
+    env_file:
+      - ./config/dev.env
+
+    environment:
+      NODE_ENV: production
+
+    ports:
+      - '3000:3000'

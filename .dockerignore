@@ -1,0 +1,33 @@
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+build
+coverage
+
+# Environment secrets
+.env
+.env.*
+config/*.env
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+.tmp
+.temp

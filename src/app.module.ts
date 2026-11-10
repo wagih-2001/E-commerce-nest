@@ -19,6 +19,7 @@ import { ReviewModule } from './review/review.module.js';
   imports: [
     ConfigModule.forRoot({
       envFilePath: resolve('./config/dev.env'),
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
       isGlobal: true,
     }),
 
