@@ -14,6 +14,10 @@ import { BrandModule } from './brand/brand.module.js';
 import { ProductModule } from './product/product.module.js';
 import { CartModule } from './cart/cart.module.js';
 import { ReviewModule } from './review/review.module.js';
+import { CouponModule } from './coupon/coupon.module.js';
+import { sign } from 'node:crypto';
+import { CashingModule } from './cashing/cashing.module.js';
+import { OrderModule } from './order/order.module.js';
 
 @Module({
   imports: [
@@ -45,6 +49,9 @@ import { ReviewModule } from './review/review.module.js';
     ProductModule,
     CartModule,
     ReviewModule,
+    CouponModule,
+    CashingModule,
+    OrderModule,
   ],
 
   controllers: [AppController],

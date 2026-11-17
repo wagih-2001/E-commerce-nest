@@ -9,10 +9,25 @@ import { TokenService } from '../common/services/token.js';
 import { AuthModule } from '../auth/auth.module.js';
 import { CategoryModel } from '../DB/models/category.model.js';
 import { ProductModel } from '../DB/models/product.model.js';
+import { CashingModule } from '../cashing/cashing.module.js';
+import { OptionalAuthGuard } from '../common/guards/optional-auth.guard.js';
 
 @Module({
-  imports: [UserModel, ProductModel, CategoryModel, BrandModel, AuthModule],
+  imports: [
+    UserModel,
+    ProductModel,
+    CategoryModel,
+    BrandModel,
+    CashingModule,
+    AuthModule,
+  ],
   controllers: [ProductController],
-  providers: [ProductService, JwtService, TokenService, CloudinaryService],
+  providers: [
+    ProductService,
+    JwtService,
+    TokenService,
+    CloudinaryService,
+    OptionalAuthGuard,
+  ],
 })
 export class ProductModule {}

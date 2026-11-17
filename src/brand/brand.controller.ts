@@ -12,19 +12,31 @@ import {
   Request,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { BrandService } from './brand.service.js';
 import { CreateBrandDto } from './dto/create-brand.dto.js';
 import { UpdateBrandDto } from './dto/update-brand.dto.js';
+
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../common/utils/multer.utils.js';
+
 import { AuthGuard } from '../common/guards/auth.guard.js';
 import { AdminGuard } from '../common/guards/admin.guard.js';
+import { OptionalAuthGuard } from '../common/guards/optional-auth.guard.js';
+
 import type { Request as ExpressRequest } from 'express';
 import { Types } from 'mongoose';
 
+import { CashingService } from '../cashing/cashing.service.js';
+import { RedisCacheInterceptor } from '../cashing/interceptors/redis-cache.interceptor.js';
+import { CacheResponse } from '../cashing/decorators/cache-response.decorator.js';
+
 @Controller('brand')
 export class BrandController {
-  constructor(private readonly _brandService: BrandService) {}
+  constructor(
+    private readonly _brandService: BrandService,
+    private readonly _cashingService: CashingService,
+  ) {}
 
   @Post('create-brand')
   @UseGuards(AuthGuard, AdminGuard)
@@ -37,12 +49,17 @@ export class BrandController {
     if (!request.user) {
       throw new UnauthorizedException('Unauthorized');
     }
-    const adminId = request.user?._id as Types.ObjectId;
+
+    const adminId = request.user._id as Types.ObjectId;
+
     const createdBrand = await this._brandService.create(
       adminId,
       createBrandDto,
       file,
     );
+
+    await this._cashingService.delByPattern('http-cache:v1:brands:*');
+
     return {
       success: true,
       message: 'Brand created successfully',
@@ -51,11 +68,23 @@ export class BrandController {
   }
 
   @Get()
+  @UseGuards(OptionalAuthGuard)
+  @UseInterceptors(RedisCacheInterceptor)
+  @CacheResponse({
+    namespace: 'brands',
+    ttl: 300,
+  })
   findAll() {
     return this._brandService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(OptionalAuthGuard)
+  @UseInterceptors(RedisCacheInterceptor)
+  @CacheResponse({
+    namespace: 'brands',
+    ttl: 300,
+  })
   findOne(@Param('id') id: string) {
     return this._brandService.findOne(id);
   }
@@ -73,6 +102,9 @@ export class BrandController {
       updateBrandDto,
       file,
     );
+
+    await this._cashingService.delByPattern('http-cache:v1:brands:*');
+
     return {
       success: true,
       message: 'Brand updated successfully',
@@ -83,6 +115,10 @@ export class BrandController {
   @Delete('delete-brand/:id')
   @UseGuards(AuthGuard, AdminGuard)
   async remove(@Param('id') id: string) {
-    return this._brandService.remove(id);
+    const deletedBrand = await this._brandService.remove(id);
+
+    await this._cashingService.delByPattern('http-cache:v1:brands:*');
+
+    return deletedBrand;
   }
 }

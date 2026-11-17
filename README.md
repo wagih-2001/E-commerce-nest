@@ -55,6 +55,8 @@ This project is being developed as a complete backend system with authentication
 - Product CRUD
 - Cart Management
 - Review Management
+- coupon Management
+- order Management
 
 ---
 
@@ -86,6 +88,8 @@ This project is being developed as a complete backend system with authentication
 - [x] Product Module (CRUD)
 - [x] Cart Module (CRUD)
 - [x] Review Module (CRUD)
+- [x] order Module (CRUD)
+- [x] coupon Module (CRUD)
 
 ---
 

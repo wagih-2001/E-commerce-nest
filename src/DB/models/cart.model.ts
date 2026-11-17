@@ -61,6 +61,27 @@ export class Cart {
     min: 0,
   })
   totalPrice: number;
+
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Coupon',
+    default: null,
+  })
+  appliedCoupon: Types.ObjectId | null;
+
+  @Prop({
+    type: Number,
+    default: 0,
+    min: 0,
+  })
+  discountAmount: number;
+
+  @Prop({
+    type: Number,
+    required: true,
+    min: 0,
+  })
+  finalTotal: number;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

@@ -13,7 +13,6 @@ async function bootstrap() {
   // CORS Configuration
   app.enableCors(corsConfig);
 
-
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalInterceptors(new LoggerInterceptor());
 
@@ -24,11 +23,12 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.enableShutdownHooks();
 
   // local
-  // await app.listen(port, '127.0.0.1');
+  await app.listen(port, '127.0.0.1');
 
-  await app.listen(port, '0.0.0.0');
+  // await app.listen(port, '0.0.0.0');
 
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
