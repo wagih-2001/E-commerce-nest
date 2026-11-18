@@ -146,8 +146,7 @@ export class Order {
     type: OrderCouponSchema,
     default: null,
   })
-  coupon?: OrderCoupon;
-
+  coupon: OrderCoupon | null;
   // Pricing
 
   @Prop({
