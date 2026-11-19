@@ -278,6 +278,11 @@ The project is still under active development and additional backend features wi
 
 ---
 
+## Documentation
+
+- [Project Documentation](./README.md)
+- [API Documentation](./docs/API.md)
+
 ## 👨‍💻 Author
 
 **Wagih Ahmed**
